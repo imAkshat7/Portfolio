@@ -185,17 +185,6 @@ const AboutShowcase = () => {
               >
                 <div className="profile-image-container">
                   {renderProfileImage(aboutProfile)}
-                  
-                  <motion.div
-                    className="profile-overlay"
-                    initial={{ opacity: 0 }}
-                    animate={{ 
-                      opacity: hoveredProfile === aboutProfile._id ? 1 : 0 
-                    }}
-                    transition={{ duration: 0.3 }}
-                  >
-                    <span className="overlay-text">Learn More</span>
-                  </motion.div>
                 </div>
                 
                 <div className="profile-content-section">
