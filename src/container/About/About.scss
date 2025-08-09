@@ -1,0 +1,311 @@
+/* About Section - Clean Grid Layout (No Outer Box) */
+.about-showcase-section {
+  padding: 4rem 2rem;
+  position: relative;
+
+  @media screen and (max-width: 768px) {
+    padding: 2rem 1rem;
+  }
+
+  @media screen and (max-width: 450px) {
+    padding: 1rem 0.5rem;
+  }
+
+  @media screen and (max-width: 320px) {
+    padding: 0.5rem 0.3rem;
+  }
+
+  .head-text {
+    text-align: center;
+    margin-bottom: 2rem;
+    background: linear-gradient(135deg, #313BAC 0%, #667eea 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+
+    @media screen and (max-width: 450px) {
+      margin-bottom: 1rem;
+    }
+
+    @media screen and (max-width: 320px) {
+      margin-bottom: 0.5rem;
+    }
+  }
+
+  .profiles-showcase-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 2rem;
+    padding: 2rem 0;
+    max-width: 1400px;
+    margin: 0 auto;
+
+    // 3 columns on desktop and large laptops
+    @media screen and (min-width: 1024px) {
+      grid-template-columns: repeat(3, 1fr);
+      gap: 2rem;
+    }
+
+    // 2 columns on tablets and smaller laptops
+    @media screen and (max-width: 1023px) and (min-width: 768px) {
+      grid-template-columns: repeat(2, 1fr);
+      gap: 1.5rem;
+      padding: 1.5rem 0;
+    }
+
+    // 1 column on mobile devices  
+    @media screen and (max-width: 767px) {
+      grid-template-columns: 1fr;
+      gap: 1.5rem;
+      padding: 1rem 0;
+      max-width: 400px;
+    }
+
+    // Very small screens
+    @media screen and (max-width: 450px) {
+      gap: 0.8rem;
+      padding: 0.2rem 0;
+      max-width: 100%;
+    }
+
+    @media screen and (max-width: 320px) {
+      gap: 0.5rem;
+      padding: 0.1rem 0;
+    }
+  }
+
+  .profile-showcase-card {
+    background: transparent;
+    border-radius: 0;
+    overflow: visible;
+    box-shadow: none;
+    transition: all 0.3s ease;
+    cursor: pointer;
+    width: 100%;
+    max-width: 100%;
+
+    @media screen and (max-width: 767px) {
+      max-width: 350px;
+      margin: 0 auto;
+    }
+
+    @media screen and (max-width: 450px) {
+      max-width: 100%;
+    }
+
+    &:hover {
+      transform: translateY(-5px);
+    }
+
+    .profile-image-container {
+      position: relative;
+      overflow: hidden;
+      border-radius: 15px;
+      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+      transition: all 0.3s ease;
+
+      &:hover {
+        box-shadow: 0 20px 40px rgba(0, 0, 0, 0.15);
+      }
+
+      img {
+        width: 100%;
+        height: 250px;
+        object-fit: cover;
+        transition: all 0.3s ease;
+        border-radius: 15px;
+
+        @media screen and (max-width: 768px) {
+          height: 200px;
+        }
+
+        @media screen and (max-width: 450px) {
+          height: 180px;
+        }
+
+        @media screen and (max-width: 320px) {
+          height: 150px;
+        }
+      }
+
+      .profile-image-placeholder {
+        width: 100%;
+        height: 250px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        background: linear-gradient(135deg, #313BAC 0%, #667eea 100%);
+        color: white;
+        font-weight: 500;
+        border-radius: 15px;
+
+        @media screen and (max-width: 768px) {
+          height: 200px;
+        }
+
+        @media screen and (max-width: 450px) {
+          height: 180px;
+        }
+
+        @media screen and (max-width: 320px) {
+          height: 150px;
+        }
+        
+        .placeholder-icon {
+          font-size: 3rem;
+          font-weight: bold;
+
+          @media screen and (max-width: 450px) {
+            font-size: 2.5rem;
+          }
+
+          @media screen and (max-width: 320px) {
+            font-size: 2rem;
+          }
+        }
+      }
+
+      .profile-overlay {
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        background: rgba(49, 59, 172, 0.8);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        color: white;
+        font-weight: 600;
+        font-size: 16px;
+        opacity: 0;
+        transition: opacity 0.3s ease;
+        border-radius: 15px;
+      }
+
+      &:hover .profile-overlay {
+        opacity: 1;
+      }
+
+      &:hover img {
+        transform: scale(1.05);
+      }
+    }
+
+    .profile-content-section {
+      padding: 1.5rem 0 0 0;
+      background: transparent;
+
+      @media screen and (max-width: 450px) {
+        padding: 1rem 0 0 0;
+      }
+
+      @media screen and (max-width: 320px) {
+        padding: 0.8rem 0 0 0;
+      }
+
+      .profile-title {
+        font-size: 1.5rem;
+        font-weight: 600;
+        margin-bottom: 1rem;
+        color: #333;
+        transition: all 0.3s ease;
+
+        @media screen and (max-width: 450px) {
+          font-size: 1.3rem;
+          margin-bottom: 0.8rem;
+        }
+
+        @media screen and (max-width: 320px) {
+          font-size: 1.2rem;
+          margin-bottom: 0.6rem;
+        }
+      }
+
+      .profile-description {
+        color: #666;
+        line-height: 1.6;
+        font-size: 15px;
+        margin: 0;
+        transition: all 0.3s ease;
+
+        @media screen and (max-width: 450px) {
+          font-size: 14px;
+          line-height: 1.5;
+        }
+
+        @media screen and (max-width: 320px) {
+          font-size: 13px;
+          line-height: 1.4;
+        }
+      }
+    }
+  }
+
+  .empty-profiles-state {
+    grid-column: 1 / -1;
+    text-align: center;
+    padding: 4rem 2rem;
+
+    .empty-message {
+      color: #666;
+      font-size: 18px;
+    }
+  }
+}
+
+// Loading and error states
+.about-loading-container, .about-error-container {
+  min-height: 50vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+
+  .head-text {
+    margin-bottom: 2rem;
+  }
+
+  .loading-spinner {
+    display: flex;
+    gap: 12px;
+    margin-top: 30px;
+
+    .spinner-dot {
+      width: 16px;
+      height: 16px;
+      border-radius: 50%;
+      background: linear-gradient(45deg, #313BAC, #667eea);
+      animation: loading-bounce 1.4s infinite ease-in-out both;
+
+      &:nth-child(1) { animation-delay: -0.32s; }
+      &:nth-child(2) { animation-delay: -0.16s; }
+    }
+  }
+
+  .retry-button {
+    margin-top: 30px;
+    padding: 15px 30px;
+    border: none;
+    border-radius: 50px;
+    background: linear-gradient(135deg, #313BAC 0%, #667eea 100%);
+    color: white;
+    cursor: pointer;
+    font-weight: 600;
+    transition: all 0.3s ease;
+    box-shadow: 0 8px 25px rgba(49, 59, 172, 0.3);
+
+    &:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 12px 35px rgba(49, 59, 172, 0.4);
+    }
+  }
+}
+
+@keyframes loading-bounce {
+  0%, 80%, 100% { 
+    transform: scale(0);
+  } 40% { 
+    transform: scale(1.0);
+  }
+}

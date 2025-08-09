@@ -1,0 +1,244 @@
+import React, { useState, useEffect, useCallback } from "react";
+import { motion, AnimatePresence } from "framer-motion";
+import "./About.scss";
+
+import { AppWrap, MotionWrap } from "../../wrapper";
+import { urlFor, client } from "../../client";
+
+const AboutShowcase = () => {
+  const [aboutsData, setAboutsData] = useState([]);
+  const [isContentLoading, setIsContentLoading] = useState(true);
+  const [loadError, setLoadError] = useState(null);
+  const [hoveredProfile, setHoveredProfile] = useState(null);
+
+  // Custom data fetching method
+  const fetchAboutContent = useCallback(async () => {
+    try {
+      setIsContentLoading(true);
+      const aboutQuery = '*[_type == "abouts"] | order(_createdAt asc)';
+      
+      const aboutsContent = await client.fetch(aboutQuery);
+      
+      // Add processing delay for smooth UX
+      setTimeout(() => {
+        setAboutsData(aboutsContent);
+        setIsContentLoading(false);
+      }, 350);
+      
+    } catch (error) {
+      console.error('About content fetch failed:', error);
+      setLoadError('Unable to load about information');
+      setIsContentLoading(false);
+    }
+  }, []);
+
+  useEffect(() => {
+    fetchAboutContent();
+  }, [fetchAboutContent]);
+
+  // Animation variants for profiles
+  const profileContainerVariants = {
+    hidden: { opacity: 0 },
+    visible: {
+      opacity: 1,
+      transition: {
+        staggerChildren: 0.2,
+        delayChildren: 0.3
+      }
+    }
+  };
+
+  const profileItemVariants = {
+    hidden: { 
+      opacity: 0, 
+      y: 50,
+      scale: 0.8
+    },
+    visible: { 
+      opacity: 1, 
+      y: 0,
+      scale: 1,
+      transition: {
+        type: "spring",
+        stiffness: 100,
+        damping: 12
+      }
+    }
+  };
+
+  // Profile interaction handlers
+  const handleProfileHover = useCallback((profileId) => {
+    setHoveredProfile(profileId);
+  }, []);
+
+  const handleProfileLeave = useCallback(() => {
+    setHoveredProfile(null);
+  }, []);
+
+  // Render profile image with fallback
+  const renderProfileImage = (about) => {
+    if (about.imgUrl) {
+      return (
+        <img 
+          src={urlFor(about.imgUrl)} 
+          alt={`${about.title} profile`}
+          loading="lazy"
+        />
+      );
+    }
+    
+    return (
+      <div className="profile-image-placeholder">
+        <span className="placeholder-icon">
+          {about.title?.charAt(0)?.toUpperCase() || '?'}
+        </span>
+      </div>
+    );
+  };
+
+  // Loading state
+  if (isContentLoading) {
+    return (
+      <div className="about-loading-container">
+        <motion.div
+          initial={{ opacity: 0, scale: 0.9 }}
+          animate={{ opacity: 1, scale: 1 }}
+          transition={{ duration: 0.5 }}
+          className="loading-content"
+        >
+          <h2 className="head-text">
+            <span>Loading </span>
+            <span>Profile...</span>
+          </h2>
+          <div className="loading-spinner">
+            <motion.div
+              className="spinner-circle"
+              animate={{ rotate: 360 }}
+              transition={{ duration: 1, repeat: Infinity, ease: "linear" }}
+            />
+          </div>
+        </motion.div>
+      </div>
+    );
+  }
+
+  // Error state
+  if (loadError) {
+    return (
+      <div className="about-error-container">
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.5 }}
+        >
+          <h2 className="head-text">About Profile</h2>
+          <p className="error-message">{loadError}</p>
+          <motion.button
+            className="retry-button"
+            onClick={fetchAboutContent}
+            whileHover={{ scale: 1.05 }}
+            whileTap={{ scale: 0.95 }}
+          >
+            Reload Content
+          </motion.button>
+        </motion.div>
+      </div>
+    );
+  }
+
+  return (
+    <section className="about-showcase-section">
+      <motion.h2 
+        className="head-text"
+        initial={{ opacity: 0, y: -30 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ duration: 0.7 }}
+      >
+
+        <span>Penetration testing isn’t </span>
+        <span>just about</span>
+        <br />
+        <span>hacking—it's about </span>
+        <span>thinking ahead</span>
+      </motion.h2>
+
+      <motion.div 
+        className="profiles-showcase-grid"
+        variants={profileContainerVariants}
+        initial="hidden"
+        animate="visible"
+      >
+        <AnimatePresence>
+          {aboutsData.length > 0 ? (
+            aboutsData.map((aboutProfile, index) => (
+              <motion.article
+                key={aboutProfile._id || `profile-${index}`}
+                className="profile-showcase-card"
+                variants={profileItemVariants}
+                whileHover={{ 
+                  scale: 1.08,
+                  rotateY: 5,
+                  transition: { duration: 0.3 }
+                }}
+                onMouseEnter={() => handleProfileHover(aboutProfile._id)}
+                onMouseLeave={handleProfileLeave}
+              >
+                <div className="profile-image-container">
+                  {renderProfileImage(aboutProfile)}
+                  
+                  <motion.div
+                    className="profile-overlay"
+                    initial={{ opacity: 0 }}
+                    animate={{ 
+                      opacity: hoveredProfile === aboutProfile._id ? 1 : 0 
+                    }}
+                    transition={{ duration: 0.3 }}
+                  >
+                    <span className="overlay-text">Learn More</span>
+                  </motion.div>
+                </div>
+                
+                <div className="profile-content-section">
+                  <motion.h3 
+                    className="profile-title"
+                    animate={{ 
+                      color: hoveredProfile === aboutProfile._id ? '#313BAC' : '#000'
+                    }}
+                    transition={{ duration: 0.2 }}
+                  >
+                    {aboutProfile.title}
+                  </motion.h3>
+                  
+                  <motion.p 
+                    className="profile-description"
+                    animate={{ 
+                      opacity: hoveredProfile === aboutProfile._id ? 0.9 : 0.7
+                    }}
+                    transition={{ duration: 0.2 }}
+                  >
+                    {aboutProfile.description}
+                  </motion.p>
+                </div>
+              </motion.article>
+            ))
+          ) : (
+            <motion.div 
+              className="empty-profiles-state"
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              transition={{ delay: 0.3 }}
+            >
+              <p className="empty-message">No profile information available</p>
+            </motion.div>
+          )}
+        </AnimatePresence>
+      </motion.div>
+    </section>
+  );
+};
+
+export default AppWrap(
+  MotionWrap(AboutShowcase, "app__about"),
+  "about",
+  "app__whitebg"
+);
