@@ -4,14 +4,13 @@ import { motion, AnimatePresence } from 'framer-motion';
 
 import { AppWrap, MotionWrap } from '../../wrapper';
 import { urlFor, client } from '../../client';
-import './Project.scss';
+import './project.scss';
 
 const ProjectShowcase = () => {
   // State management with unique naming
   const [projectsRepository, setProjectsRepository] = useState([]);
   const [displayedProjects, setDisplayedProjects] = useState([]);
   const [selectedCategory, setSelectedCategory] = useState('All');
-  const [cardAnimationState, setCardAnimationState] = useState({ y: 0, opacity: 1 });
   const [dataIsLoading, setDataIsLoading] = useState(true);
   const [fetchError, setFetchError] = useState(null);
 
@@ -71,20 +70,18 @@ const ProjectShowcase = () => {
     if (category === selectedCategory) return;
     
     setSelectedCategory(category);
-    setCardAnimationState({ y: 50, opacity: 0 });
+    // Remove the problematic animation state that causes spacing issues
+    // setCardAnimationState({ y: 50, opacity: 0 });
 
-    const animationTimer = setTimeout(() => {
-      const filteredProjects = category === 'All' 
-        ? projectsRepository 
-        : projectsRepository.filter(project => 
-            project.tags && project.tags.includes(category)
-          );
-      
-      setDisplayedProjects(filteredProjects);
-      setCardAnimationState({ y: 0, opacity: 1 });
-    }, 350);
-
-    return () => clearTimeout(animationTimer);
+    // Filter projects immediately without animation delay
+    const filteredProjects = category === 'All' 
+      ? projectsRepository 
+      : projectsRepository.filter(project => 
+          project.tags && project.tags.includes(category)
+        );
+    
+    setDisplayedProjects(filteredProjects);
+    // setCardAnimationState({ y: 0, opacity: 1 });
   }, [selectedCategory, projectsRepository]);
 
   // Custom animation variants
@@ -224,8 +221,6 @@ const ProjectShowcase = () => {
 
       {/* Projects Grid */}
       <motion.div
-        animate={cardAnimationState}
-        transition={{ duration: 0.4, ease: "easeInOut" }}
         className="projects-grid-layout"
       >
         <AnimatePresence mode="wait">
@@ -299,6 +294,36 @@ const ProjectShowcase = () => {
                         ))}
                       </div>
                     )}
+
+                    {/* Mobile Action Buttons */}
+                    <div className="mobile-action-buttons">
+                      {project.projectLink && (
+                        <motion.a
+                          href={project.projectLink}
+                          target="_blank"
+                          rel="noreferrer"
+                          className="mobile-action-btn demo-btn"
+                          whileHover={{ scale: 1.05 }}
+                          whileTap={{ scale: 0.95 }}
+                        >
+                          <AiFillEye />
+                          <span>Live Demo</span>
+                        </motion.a>
+                      )}
+                      {project.codeLink && (
+                        <motion.a
+                          href={project.codeLink}
+                          target="_blank"
+                          rel="noreferrer"
+                          className="mobile-action-btn code-btn"
+                          whileHover={{ scale: 1.05 }}
+                          whileTap={{ scale: 0.95 }}
+                        >
+                          <AiFillGithub />
+                          <span>View Code</span>
+                        </motion.a>
+                      )}
+                    </div>
                   </div>
                 </motion.article>
               ))}

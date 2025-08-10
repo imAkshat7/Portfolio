@@ -154,3 +154,73 @@
     top: -25px;
   }
 }
+
+// Mobile Action Buttons - Visible on mobile devices
+.mobile-action-buttons {
+  display: none; // Hidden by default (desktop)
+  flex-direction: row;
+  gap: 1rem;
+  margin-top: 1rem;
+  justify-content: center;
+
+  .mobile-action-btn {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    padding: 0.75rem 1rem;
+    border-radius: 25px;
+    text-decoration: none;
+    font-weight: 600;
+    font-size: 0.9rem;
+    transition: all 0.3s ease;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+
+    svg {
+      font-size: 1.2rem;
+    }
+
+    &.demo-btn {
+      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+      color: white;
+
+      &:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 4px 15px rgba(102, 126, 234, 0.4);
+      }
+    }
+
+    &.code-btn {
+      background: linear-gradient(135deg, #24292e 0%, #40474f 100%);
+      color: white;
+
+      &:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 4px 15px rgba(36, 41, 46, 0.4);
+      }
+    }
+  }
+
+  // Show mobile buttons on tablets and mobile
+  @media screen and (max-width: 768px) {
+    display: flex;
+  }
+
+  // Adjust button size for smaller screens
+  @media screen and (max-width: 480px) {
+    flex-direction: column;
+    gap: 0.75rem;
+
+    .mobile-action-btn {
+      padding: 0.8rem 1.2rem;
+      font-size: 1rem;
+      justify-content: center;
+    }
+  }
+}
+
+// Hide hover overlay on mobile devices
+@media screen and (max-width: 768px) {
+  .app__work-hover {
+    display: none;
+  }
+}
