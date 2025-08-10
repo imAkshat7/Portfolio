@@ -4,7 +4,7 @@ import { motion, AnimatePresence } from 'framer-motion';
 
 import { AppWrap, MotionWrap } from '../../wrapper';
 import { urlFor, client } from '../../client';
-import './project.scss';
+import './Project.scss';
 
 const ProjectShowcase = () => {
   // State management with unique naming
